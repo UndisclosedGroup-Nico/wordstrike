@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-panel: var(--panel);
+  --color-line: var(--line);
+  --color-paper: var(--paper);
+  --color-fog: var(--fog);
+  --color-mint: var(--mint);
+  --color-mint-bright: var(--mint-bright);
+  --color-rose: var(--rose);
+  --color-rose-bright: var(--rose-bright);
+  --color-gold: var(--gold);
+  --color-gold-bright: var(--gold-bright);
+  --color-ice: var(--ice);
+  --font-sans: var(--font-sans-loaded);
+  --font-mono: var(--font-mono-loaded);
+  --font-display: var(--font-sans-loaded);
+}
+
+:root,
+[data-theme="void"] {
+  --ink: #06070b;
+  --panel: #0c0e16;
+  --line: #222838;
+  --paper: #eef3ff;
+  --fog: #8b93a7;
+  --mint: #3ef2b2;
+  --mint-bright: #7cffd2;
+  --rose: #ff4b7a;
+  --rose-bright: #ff7a9c;
+  --gold: #ffd166;
+  --gold-bright: #ffe29a;
+  --ice: #7aa2ff;
+}
+
+[data-theme="ember"] {
+  --ink: #100807;
+  --panel: #1a0e0c;
+  --line: #3a221c;
+  --paper: #fff1e6;
+  --fog: #c4a394;
+  --mint: #ff8a3d;
+  --mint-bright: #ffb07a;
+  --rose: #ff4b4b;
+  --rose-bright: #ff7a7a;
+  --gold: #ffd166;
+  --gold-bright: #ffe29a;
+  --ice: #ffb86b;
+}
+
+[data-theme="ion"] {
+  --ink: #070712;
+  --panel: #0d1020;
+  --line: #262b4a;
+  --paper: #eef0ff;
+  --fog: #8d93c2;
+  --mint: #7c6bff;
+  --mint-bright: #a99bff;
+  --rose: #ff4bd1;
+  --rose-bright: #ff7adf;
+  --gold: #7ae1ff;
+  --gold-bright: #b5f0ff;
+  --ice: #5eead4;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(1200px 500px at 50% -10%, color-mix(in oklab, var(--mint) 12%, transparent), transparent),
+    var(--ink);
+  color: var(--paper);
+  font-family: var(--font-sans), sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-weight: 800;
+}
+
+.input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--line);
+  background: color-mix(in oklab, var(--ink) 80%, black);
+  padding: 0.5rem 0.75rem;
+  color: var(--paper);
+}
+
+.input:focus {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-right: 1px;
+  background: var(--mint);
+  vertical-align: text-bottom;
+  animation: blink 1s steps(1) infinite;
+}
+
+.arena-overdrive {
+  box-shadow: 0 0 40px color-mix(in oklab, var(--rose) 25%, transparent);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes lunge {
+  0% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes hit {
+  0% {
+    transform: translateX(0) scale(1);
+    filter: brightness(1);
+  }
+  40% {
+    transform: translateX(6px) scale(0.96);
+    filter: brightness(1.4);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes idle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes defeat {
+  to {
+    transform: scale(0.7) rotate(8deg);
+    opacity: 0.25;
+  }
+}
+
+@keyframes float-up {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -28px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.16s linear;
+}
+
+.animate-lunge {
+  animation: lunge 0.18s ease-out;
+}
+
+.animate-hit {
+  animation: hit 0.2s ease-out;
+}
+
+.animate-idle {
+  animation: idle 2.4s ease-in-out infinite;
+}
+
+.animate-defeat {
+  animation: defeat 0.45s ease-in forwards;
+}
+
+.animate-float-up {
+  animation: float-up 0.85s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret,
+  .animate-shake,
+  .animate-lunge,
+  .animate-hit,
+  .animate-idle,
+  .animate-defeat,
+  .animate-float-up,
+  .animate-pulse {
+    animation: none !important;
+  }
+}
+
+[data-density="compact"] .font-display {
+  letter-spacing: 0.04em;
+}
