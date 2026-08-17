@@ -28,3 +28,7 @@ npm run build
 Configure → type → fight → results → Tab / Enter to go again.
 
 Shortcuts: `Tab` or `Esc` restarts. `Enter` restarts from the results screen.
+
+## Assets
+
+Player fighter is [Martial Hero](https://luizmelo.itch.io/martial-hero) by LuizMelo (CC0). Correct words play an attack slash. Wrong letters, failed words, and HP loss play the take-hit clip.

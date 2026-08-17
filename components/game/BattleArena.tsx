@@ -15,7 +15,8 @@ export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
     !reducedMotion &&
     state.settings.screenShake &&
     state.shakeUntil > state.now;
-  const attacking = !reducedMotion && state.attackUntil > state.now;
+  const attacking = state.attackUntil > state.now;
+  const hurting = state.errorUntil > state.now;
   const hit = !reducedMotion && state.hitUntil > state.now;
   const comboFx = state.settings.comboEffects && !reducedMotion;
 
@@ -34,11 +35,18 @@ export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
           max={state.enemyMaxHp}
           tone="rose"
         />
-        <div className="relative flex min-h-40 w-full items-end justify-center gap-10 sm:gap-16">
+        <div className="relative flex min-h-52 w-full items-end justify-center gap-8 sm:gap-14">
           {state.settings.damageNumbers
             ? state.floats.map((item) => <DamageNumber key={item.id} item={item} />)
             : null}
-          <Player attacking={attacking} />
+          <Player
+            attacking={attacking}
+            hurt={hurting}
+            dead={state.playerHp <= 0}
+            attackToken={state.attackUntil}
+            hurtToken={state.errorUntil}
+            reducedMotion={reducedMotion}
+          />
           <div className="hidden h-px w-16 self-center bg-gradient-to-r from-mint to-rose sm:block" />
           <Enemy
             hit={hit}
