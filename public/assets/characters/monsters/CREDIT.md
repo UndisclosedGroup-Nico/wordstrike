@@ -1,7 +1,7 @@
 # Monsters Creatures Fantasy
 
-Pixel enemies by [LuizMelo](https://luizmelo.itch.io/monsters-creatures-fantasy).
+Pixel enemies by [LuizMelo](https://luizmelo.itch.io/monsters-creatures-fantasy) and [Monsters Creatures Fantasy 2](https://luizmelo.itch.io/monsters-creatures-fantasy-2).
 
-License: [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Credits are not required; included here because the pack matches the player fighter.
+License: [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Credits are not required; included here because the packs match the player fighter.
 
-Roster: Skeleton, Mushroom, Goblin, Flying Eye.
+Roster: Skeleton, Mimic, Mushroom, Rat, Goblin, Slime, Flying Eye, Bat.
