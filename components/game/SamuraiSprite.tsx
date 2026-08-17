@@ -148,7 +148,7 @@ export function SamuraiSprite({
   return (
     <div className="relative h-full w-full [container-type:size]" aria-hidden="true">
       <div
-        className="absolute bottom-0 left-1/2 origin-bottom"
+        className="absolute -bottom-[14%] left-1/2 origin-bottom"
         style={{
           width: CROP.w,
           height: CROP.h,
