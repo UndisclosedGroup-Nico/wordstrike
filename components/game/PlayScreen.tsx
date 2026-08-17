@@ -82,6 +82,15 @@ export function PlayScreen() {
   }, [state.status]);
 
   useEffect(() => {
+    const blockPageScroll = (event: KeyboardEvent) => {
+      if (event.key !== " " && event.code !== "Space") return;
+      event.preventDefault();
+    };
+    window.addEventListener("keydown", blockPageScroll, { passive: false });
+    return () => window.removeEventListener("keydown", blockPageScroll);
+  }, []);
+
+  useEffect(() => {
     if (state.status !== "finished" || savedId.current === state.endedAt?.toString()) {
       return;
     }

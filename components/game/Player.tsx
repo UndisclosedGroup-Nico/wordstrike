@@ -21,12 +21,12 @@ export function Player({
 }: PlayerProps) {
   return (
     <div
-      className={`relative flex h-44 w-40 items-end justify-center ${
+      className={`relative flex size-[min(25vw,36vh)] items-end justify-center ${
         !reducedMotion && attacking ? "animate-lunge" : ""
       } ${!reducedMotion && hurt ? "animate-hit" : ""}`}
       aria-hidden="true"
     >
-      <div className="pointer-events-none absolute bottom-1 left-1/2 h-3 w-16 -translate-x-1/2 rounded-full bg-mint/25 blur-[3px]" />
+      <div className="pointer-events-none absolute bottom-[4%] left-1/2 h-[6%] w-2/5 -translate-x-1/2 rounded-full bg-mint/25 blur-[6px]" />
       <SamuraiSprite
         attacking={attacking}
         hurt={hurt}

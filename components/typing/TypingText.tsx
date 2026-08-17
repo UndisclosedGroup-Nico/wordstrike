@@ -56,10 +56,16 @@ export function TypingText({
   history,
   errorFlash,
 }: TypingTextProps) {
+  const boxRef = useRef<HTMLDivElement | null>(null);
   const currentRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    currentRef.current?.scrollIntoView({ block: "center", behavior: "auto" });
+    const box = boxRef.current;
+    const current = currentRef.current;
+    if (!box || !current) return;
+    const boxRect = box.getBoundingClientRect();
+    const wordRect = current.getBoundingClientRect();
+    box.scrollTop += wordRect.top - boxRect.top - box.clientHeight / 2 + wordRect.height / 2;
   }, [wordIndex]);
 
   const start = Math.max(0, wordIndex - 8);
@@ -68,7 +74,8 @@ export function TypingText({
 
   return (
     <div
-      className={`relative max-h-40 overflow-hidden rounded-2xl border border-line bg-ink/70 px-4 py-6 sm:px-8 ${
+      ref={boxRef}
+      className={`relative max-h-40 overflow-y-auto overscroll-none rounded-2xl border border-line bg-ink/70 px-4 py-6 sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
         errorFlash ? "ring-1 ring-rose/70" : ""
       }`}
     >

@@ -203,6 +203,20 @@ body {
   animation: lunge 0.18s ease-out;
 }
 
+@keyframes enemy-lunge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(-12px);
+  }
+}
+
+.animate-enemy-lunge {
+  animation: enemy-lunge 0.45s ease-out;
+}
+
 .animate-hit {
   animation: hit 0.2s ease-out;
 }
@@ -223,6 +237,7 @@ body {
   .caret,
   .animate-shake,
   .animate-lunge,
+  .animate-enemy-lunge,
   .animate-hit,
   .animate-idle,
   .animate-defeat,

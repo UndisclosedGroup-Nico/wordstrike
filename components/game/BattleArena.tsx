@@ -3,6 +3,7 @@ import { DamageNumber } from "@/components/game/DamageNumber";
 import { Enemy } from "@/components/game/Enemy";
 import { HealthBar } from "@/components/game/HealthBar";
 import { Player } from "@/components/game/Player";
+import { monsterForWave } from "@/lib/game/monsters";
 import type { BattleState } from "@/types/game";
 
 interface BattleArenaProps {
@@ -18,7 +19,10 @@ export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
   const attacking = state.attackUntil > state.now;
   const hurting = state.errorUntil > state.now;
   const hit = !reducedMotion && state.hitUntil > state.now;
+  const enemyAttacking = state.lastHit?.kind === "hurt";
+  const enemyAttackToken = enemyAttacking ? state.lastHit.id : 0;
   const comboFx = state.settings.comboEffects && !reducedMotion;
+  const monster = monsterForWave(state.wave, state.settings.mode === "boss");
 
   return (
     <section
@@ -30,12 +34,16 @@ export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(62,242,178,0.08),transparent_45%),radial-gradient(circle_at_50%_80%,rgba(255,75,122,0.08),transparent_40%)]" />
       <div className="relative flex flex-col items-center gap-4">
         <HealthBar
-          label={state.settings.mode === "boss" ? "Boss" : `Wave ${state.wave}`}
+          label={
+            state.settings.mode === "boss"
+              ? `Boss · ${monster.name}`
+              : `Wave ${state.wave} · ${monster.name}`
+          }
           value={state.enemyHp}
           max={state.enemyMaxHp}
           tone="rose"
         />
-        <div className="relative flex min-h-52 w-full items-end justify-center gap-8 sm:gap-14">
+        <div className="relative flex min-h-[min(25vw,36vh)] w-full items-end justify-center gap-[2vw]">
           {state.settings.damageNumbers
             ? state.floats.map((item) => <DamageNumber key={item.id} item={item} />)
             : null}
@@ -50,9 +58,13 @@ export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
           <div className="hidden h-px w-16 self-center bg-gradient-to-r from-mint to-rose sm:block" />
           <Enemy
             hit={hit}
+            attacking={enemyAttacking && state.errorUntil > state.now}
             defeated={state.enemyDefeated}
             boss={state.settings.mode === "boss"}
             wave={state.wave}
+            hitToken={state.hitUntil}
+            attackToken={enemyAttackToken}
+            reducedMotion={reducedMotion}
           />
         </div>
         <ComboDisplay combo={state.combo} enabled={comboFx} />

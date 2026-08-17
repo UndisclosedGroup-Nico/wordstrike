@@ -1,45 +1,58 @@
+"use client";
+
+import { MonsterSprite } from "@/components/game/MonsterSprite";
+import { monsterForWave } from "@/lib/game/monsters";
+
 interface EnemyProps {
   hit: boolean;
+  attacking: boolean;
   defeated: boolean;
   boss: boolean;
   wave: number;
+  hitToken: number;
+  attackToken: number;
+  reducedMotion: boolean;
 }
 
-export function Enemy({ hit, defeated, boss, wave }: EnemyProps) {
-  const size = boss ? "h-36 w-36" : "h-28 w-28";
+export function Enemy({
+  hit,
+  attacking,
+  defeated,
+  boss,
+  wave,
+  hitToken,
+  attackToken,
+  reducedMotion,
+}: EnemyProps) {
+  const monster = monsterForWave(wave, boss);
+  const size = boss ? "size-[min(28vw,40vh)]" : "size-[min(25vw,36vh)]";
+
   return (
     <div
-      className={`relative flex items-center justify-center ${size} ${
-        defeated ? "animate-defeat" : hit ? "animate-hit" : "animate-idle"
+      className={`relative flex flex-col items-center justify-end ${size} ${
+        defeated
+          ? "animate-defeat"
+          : !reducedMotion && attacking
+            ? "animate-enemy-lunge"
+            : hit && reducedMotion
+              ? "animate-hit"
+              : ""
       }`}
       aria-hidden="true"
     >
-      <svg
-        viewBox="0 0 120 120"
-        className={`h-full w-full ${
-          boss
-            ? "drop-shadow-[0_0_18px_rgba(255,75,122,0.45)]"
-            : "drop-shadow-[0_0_12px_rgba(255,75,122,0.28)]"
-        }`}
-      >
-        <circle cx="60" cy="58" r={boss ? 42 : 34} fill="#1a0f16" stroke="#ff4b7a" strokeWidth="3" />
-        <polygon points="28,40 40,18 52,40" fill="#ff4b7a" />
-        <polygon points="68,40 80,14 92,40" fill="#ff4b7a" />
-        {boss ? <polygon points="50,22 60,4 70,22" fill="#ffd166" /> : null}
-        <rect x="42" y="52" width="10" height="8" fill="#ffd166" />
-        <rect x="68" y="52" width="10" height="8" fill="#ffd166" />
-        <path d="M44 74 Q60 86 76 74" fill="none" stroke="#ff4b7a" strokeWidth="3" />
-        <text
-          x="60"
-          y="108"
-          textAnchor="middle"
-          fill="#8b93a7"
-          fontSize="10"
-          fontFamily="monospace"
-        >
-          {boss ? "NULLSPAWN" : `DUMMY-${String(wave).padStart(2, "0")}`}
-        </text>
-      </svg>
+      <div className="pointer-events-none absolute bottom-[4%] left-1/2 h-[6%] w-2/5 -translate-x-1/2 rounded-full bg-rose/25 blur-[6px]" />
+      <MonsterSprite
+        monster={monster}
+        hit={hit}
+        attacking={attacking}
+        dead={defeated}
+        hitToken={hitToken}
+        attackToken={attackToken}
+        reducedMotion={reducedMotion}
+      />
+      <p className="pointer-events-none absolute -bottom-5 text-[10px] uppercase tracking-[0.18em] text-fog">
+        {boss ? `Boss · ${monster.name}` : monster.name}
+      </p>
     </div>
   );
 }

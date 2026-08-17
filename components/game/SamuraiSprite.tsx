@@ -146,14 +146,13 @@ export function SamuraiSprite({
   const shownFrame = reducedMotion ? 0 : frame;
 
   return (
-    <div
-      className="relative"
-      style={{ width: CROP.w, height: CROP.h }}
-      aria-hidden="true"
-    >
+    <div className="relative h-full w-full [container-type:size]" aria-hidden="true">
       <div
-        className="absolute inset-0"
+        className="absolute bottom-0 left-1/2 origin-bottom"
         style={{
+          width: CROP.w,
+          height: CROP.h,
+          transform: `translateX(-50%) scale(calc(100cqmin / ${CROP.w}px))`,
           backgroundImage: `url("${sheet}")`,
           backgroundRepeat: "no-repeat",
           backgroundSize: `${spec.frames * FRAME}px ${FRAME}px`,
