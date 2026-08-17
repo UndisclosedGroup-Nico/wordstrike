@@ -18,10 +18,11 @@ export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
     state.settings.screenShake &&
     state.shakeUntil > state.now;
   const attacking = state.attackUntil > state.now;
-  const failedWord = state.lastHit?.kind === "hurt";
-  const playerHurtToken = failedWord ? state.lastHit.id : 0;
+  const lastHit = state.lastHit;
+  const failedWord = lastHit?.kind === "hurt";
+  const playerHurtToken = failedWord && lastHit ? lastHit.id : 0;
   const hurting = Boolean(
-    failedWord && state.lastHit && state.now - state.lastHit.createdAt < 400,
+    failedWord && lastHit && state.now - lastHit.createdAt < 400,
   );
   const hit = !reducedMotion && state.hitUntil > state.now;
   const enemyAttacking = failedWord;
