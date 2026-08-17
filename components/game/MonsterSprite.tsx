@@ -162,10 +162,11 @@ export function MonsterSprite({
   return (
     <div className="relative h-full w-full [container-type:size]" aria-hidden="true">
       <div
-        className={`absolute bottom-0 left-1/2 origin-bottom ${
+        className={`absolute left-1/2 origin-bottom ${
           monster.blend === "lighten" ? "mix-blend-lighten" : ""
         }`}
         style={{
+          bottom: `-${monster.ground}%`,
           width: monster.crop.w,
           height: monster.crop.h,
           transform: `translateX(-50%) scaleX(-1) scale(calc(100cqmin / ${monster.scale}px))`,

@@ -48,6 +48,7 @@ export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
           value={state.enemyHp}
           max={state.enemyMaxHp}
           tone="rose"
+          labelClassName="text-paper"
         />
         <div className="relative -mb-4 flex min-h-[min(25vw,36vh)] w-full items-end justify-center">
           {state.settings.damageNumbers
@@ -77,7 +78,13 @@ export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
           </div>
         </div>
         <ComboDisplay combo={state.combo} enabled={comboFx} />
-        <HealthBar label="You" value={state.playerHp} max={state.playerMaxHp} tone="mint" />
+        <HealthBar
+          label="You"
+          value={state.playerHp}
+          max={state.playerMaxHp}
+          tone="mint"
+          labelClassName="text-paper"
+        />
       </div>
     </section>
   );

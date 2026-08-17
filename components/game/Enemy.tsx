@@ -50,9 +50,6 @@ export function Enemy({
         attackToken={attackToken}
         reducedMotion={reducedMotion}
       />
-      <p className="pointer-events-none absolute -bottom-5 text-[10px] uppercase tracking-[0.18em] text-fog">
-        {boss ? `Boss · ${monster.name}` : monster.name}
-      </p>
     </div>
   );
 }

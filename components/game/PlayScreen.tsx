@@ -26,6 +26,11 @@ function isMode(value: string | null): value is GameMode {
   return value === "classic" || value === "timeAttack" || value === "endless" || value === "boss";
 }
 
+function isFocusExempt(target: EventTarget | null): boolean {
+  if (!(target instanceof Element)) return false;
+  return Boolean(target.closest("a, button, input, textarea, select, label, [role='button']"));
+}
+
 export function PlayScreen() {
   const { settings, update } = useSettings();
   const params = useSearchParams();
@@ -88,6 +93,31 @@ export function PlayScreen() {
     };
     window.addEventListener("keydown", blockPageScroll, { passive: false });
     return () => window.removeEventListener("keydown", blockPageScroll);
+  }, []);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+
+    const holdTypingFocus = (event: PointerEvent) => {
+      if (isFocusExempt(event.target)) return;
+      event.preventDefault();
+      inputRef.current?.focus();
+    };
+
+    const restoreTypingFocus = () => {
+      window.requestAnimationFrame(() => {
+        if (isFocusExempt(document.activeElement)) return;
+        inputRef.current?.focus();
+      });
+    };
+
+    document.addEventListener("pointerdown", holdTypingFocus, { capture: true });
+    const input = inputRef.current;
+    input?.addEventListener("blur", restoreTypingFocus);
+    return () => {
+      document.removeEventListener("pointerdown", holdTypingFocus, { capture: true });
+      input?.removeEventListener("blur", restoreTypingFocus);
+    };
   }, []);
 
   useEffect(() => {
@@ -162,10 +192,7 @@ export function PlayScreen() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
   return (
-    <div
-      className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-4 px-4 py-6"
-      onMouseDown={() => inputRef.current?.focus()}
-    >
+    <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-4 px-4 py-6">
       <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-fog">
         <p>
           {state.settings.mode} · {state.settings.difficulty}
@@ -214,7 +241,7 @@ export function PlayScreen() {
       <p className="text-center text-xs text-fog">
         {state.status === "idle"
           ? "Start typing to fight. Tab or Esc restarts."
-          : "Tab / Esc restart · keep typing, do not click the page."}
+          : "Tab / Esc restart."}
       </p>
 
       <div className="rounded-xl border border-gold/20 bg-gold/5 px-4 py-3 text-sm text-gold md:hidden">

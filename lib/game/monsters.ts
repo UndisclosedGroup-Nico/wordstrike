@@ -12,6 +12,7 @@ export interface MonsterDef {
   crop: { x: number; y: number; w: number; h: number };
   scale: number;
   blend: "lighten" | "normal";
+  ground: number;
   idle: MonsterClip;
   attack: MonsterClip;
   hurt: MonsterClip;
@@ -26,13 +27,14 @@ function pack1Clips(
   folder: string,
   idleFile: string,
   idleFrames: number,
-): Pick<MonsterDef, "frame" | "crop" | "scale" | "blend" | "idle" | "attack" | "hurt" | "death"> {
+): Pick<MonsterDef, "frame" | "crop" | "scale" | "blend" | "ground" | "idle" | "attack" | "hurt" | "death"> {
   const root = `/assets/characters/monsters/${folder}`;
   return {
     frame: PACK1_FRAME,
     crop: PACK1_CROP,
     scale: PACK1_CROP.w,
     blend: "lighten",
+    ground: 32,
     idle: {
       src: `${root}/${idleFile}`,
       frames: idleFrames,
@@ -66,13 +68,14 @@ function pack2Clips(
   crop: { x: number; y: number; w: number; h: number },
   scale: number,
   counts: { idle: number; attack: number; hurt: number; death: number },
-): Pick<MonsterDef, "frame" | "crop" | "scale" | "blend" | "idle" | "attack" | "hurt" | "death"> {
+): Pick<MonsterDef, "frame" | "crop" | "scale" | "blend" | "ground" | "idle" | "attack" | "hurt" | "death"> {
   const root = `/assets/characters/monsters/${folder}`;
   return {
     frame,
     crop,
     scale,
     blend: "normal",
+    ground: 0,
     idle: {
       src: `${root}/Idle.png`,
       frames: counts.idle,
