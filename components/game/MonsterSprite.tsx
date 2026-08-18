@@ -164,7 +164,8 @@ export function MonsterSprite({
       <div
         className={`absolute left-1/2 origin-bottom ${
           monster.blend === "lighten" ? "mix-blend-lighten" : ""
-        }`}
+        } ${hit && !reducedMotion ? "animate-monster-flash" : ""}`}
+        key={hitToken}
         style={{
           bottom: `-${monster.ground}%`,
           width: monster.crop.w,

@@ -167,6 +167,19 @@ body {
   }
 }
 
+@keyframes monster-hit-flash {
+  0% {
+    filter: none;
+  }
+  18%,
+  58% {
+    filter: brightness(4) grayscale(1) contrast(1.85);
+  }
+  100% {
+    filter: none;
+  }
+}
+
 @keyframes idle {
   0%,
   100% {
@@ -221,6 +234,10 @@ body {
   animation: hit 0.2s ease-out;
 }
 
+.animate-monster-flash {
+  animation: monster-hit-flash 0.22s ease-out;
+}
+
 .animate-idle {
   animation: idle 2.4s ease-in-out infinite;
 }
@@ -239,6 +256,7 @@ body {
   .animate-lunge,
   .animate-enemy-lunge,
   .animate-hit,
+  .animate-monster-flash,
   .animate-idle,
   .animate-defeat,
   .animate-float-up,
