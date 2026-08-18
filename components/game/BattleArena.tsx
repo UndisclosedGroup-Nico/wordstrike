@@ -4,15 +4,17 @@ import { Enemy } from "@/components/game/Enemy";
 import { ForestBackground } from "@/components/game/ForestBackground";
 import { HealthBar } from "@/components/game/HealthBar";
 import { Player } from "@/components/game/Player";
+import { TypingText } from "@/components/typing/TypingText";
 import { monsterForWave } from "@/lib/game/monsters";
 import type { BattleState } from "@/types/game";
 
 interface BattleArenaProps {
   state: BattleState;
   reducedMotion: boolean;
+  promptReady: boolean;
 }
 
-export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
+export function BattleArena({ state, reducedMotion, promptReady }: BattleArenaProps) {
   const shaking =
     !reducedMotion &&
     state.settings.screenShake &&
@@ -51,6 +53,15 @@ export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
           labelClassName="text-paper"
         />
         <div className="relative -mb-4 flex min-h-[min(25vw,36vh)] w-full items-end justify-center">
+          {promptReady ? (
+            <div className="pointer-events-none absolute inset-x-0 top-[8%] z-10 flex justify-center">
+              <TypingText
+                word={state.words[state.wordIndex] ?? ""}
+                typed={state.currentTyped}
+                errorFlash={state.errorUntil > state.now}
+              />
+            </div>
+          ) : null}
           {state.settings.damageNumbers
             ? state.floats.map((item) => <DamageNumber key={item.id} item={item} />)
             : null}
@@ -64,7 +75,7 @@ export function BattleArena({ state, reducedMotion }: BattleArenaProps) {
               reducedMotion={reducedMotion}
             />
           </div>
-          <div className="-translate-x-[16%]">
+          <div className="relative -translate-x-[16%]">
             <Enemy
               hit={hit}
               attacking={enemyAttacking && state.errorUntil > state.now}

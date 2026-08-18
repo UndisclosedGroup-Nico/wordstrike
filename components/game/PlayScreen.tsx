@@ -6,7 +6,6 @@ import { BattleArena } from "@/components/game/BattleArena";
 import { ResultsModal } from "@/components/game/ResultsModal";
 import { useSettings } from "@/components/providers/SettingsProvider";
 import { TypingStats } from "@/components/typing/TypingStats";
-import { TypingText } from "@/components/typing/TypingText";
 import { Button } from "@/components/ui/Button";
 import { getGameResults, saveGameResult } from "@/lib/db/games";
 import { playSound } from "@/lib/game/audio";
@@ -28,21 +27,25 @@ function isMode(value: string | null): value is GameMode {
 
 function isFocusExempt(target: EventTarget | null): boolean {
   if (!(target instanceof Element)) return false;
-  return Boolean(target.closest("a, button, input, textarea, select, label, [role='button']"));
+  if (target.getRootNode() instanceof ShadowRoot) return true;
+  return Boolean(
+    target.closest("a, button, input, textarea, select, label, [role='button'], nextjs-portal"),
+  );
 }
 
 export function PlayScreen() {
-  const { settings, update } = useSettings();
+  const { settings, ready, update } = useSettings();
   const params = useSearchParams();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const savedId = useRef<string | null>(null);
   const [result, setResult] = useState<GameResult | null>(null);
   const [bests, setBests] = useState<string[]>([]);
-  const [seed] = useState(nextSeed);
+  const [booted, setBooted] = useState(false);
+  const [prefersReduced, setPrefersReduced] = useState(false);
   const [state, dispatch] = useReducer(
     battleReducer,
     undefined,
-    () => createBattleState(settings, seed),
+    () => createBattleState(settings, 1, 0),
   );
 
   useEffect(() => {
@@ -73,10 +76,23 @@ export function PlayScreen() {
   }, [settings]);
 
   useEffect(() => {
-    if (state.status === "idle") {
-      dispatch({ type: "BOOT", settings, seed: state.seed, now: Date.now() });
-    }
-  }, [settings, state.seed, state.status]);
+    if (!ready || state.status !== "idle") return;
+    dispatch({
+      type: "BOOT",
+      settings,
+      seed: booted ? state.seed : nextSeed(),
+      now: Date.now(),
+    });
+    setBooted(true);
+  }, [booted, ready, settings, state.seed, state.status]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setPrefersReduced(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     if (state.status !== "playing") return;
@@ -186,10 +202,7 @@ export function PlayScreen() {
     metrics.remainingMs === null
       ? formatTime(metrics.elapsedMs)
       : formatTime(metrics.remainingMs);
-  const reduced =
-    settings.reducedMotion ||
-    (typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const reduced = settings.reducedMotion || prefersReduced || !settings.animationsEnabled;
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-4 px-4 py-6">
@@ -205,15 +218,8 @@ export function PlayScreen() {
 
       <BattleArena
         state={state}
-        reducedMotion={reduced || !settings.animationsEnabled}
-      />
-
-      <TypingText
-        words={state.words}
-        wordIndex={state.wordIndex}
-        currentTyped={state.currentTyped}
-        history={state.history}
-        errorFlash={state.errorUntil > state.now}
+        reducedMotion={reduced}
+        promptReady={booted && state.status !== "finished"}
       />
 
       <input
