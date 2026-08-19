@@ -4,7 +4,7 @@ type Variant = "primary" | "ghost" | "danger" | "gold";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-mint text-ink hover:bg-mint-bright shadow-[0_0_24px_rgba(62,242,178,0.25)]",
+    "bg-mint text-ink hover:bg-mint-bright shadow-[0_0_24px_color-mix(in_oklab,var(--mint)_30%,transparent)]",
   ghost:
     "border border-line bg-transparent text-fog hover:text-paper hover:border-mint/50",
   danger: "bg-rose text-paper hover:bg-rose-bright",

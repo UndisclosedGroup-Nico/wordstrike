@@ -13,7 +13,7 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="flex items-center justify-between gap-4 border-b border-line px-4 py-3 sm:px-6">
+    <header className="flex items-center justify-between gap-4 border-b border-line/70 bg-ink/40 px-4 py-3 backdrop-blur-md sm:px-6">
       <Link
         href="/"
         className="font-display text-lg tracking-[0.28em] text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint"

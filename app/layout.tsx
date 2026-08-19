@@ -28,11 +28,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-theme="void"
       className={`${geist.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      <body className="relative flex min-h-full flex-col">
+        <div className="site-backdrop" aria-hidden="true" />
         <SettingsProvider>
           <ThemeApplier />
-          <SiteHeader />
-          <main className="flex flex-1 flex-col">{children}</main>
+          <div className="relative z-10 flex min-h-full flex-1 flex-col">
+            <SiteHeader />
+            <main className="flex flex-1 flex-col">{children}</main>
+          </div>
         </SettingsProvider>
       </body>
     </html>

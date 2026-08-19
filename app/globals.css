@@ -20,48 +20,48 @@
 
 :root,
 [data-theme="void"] {
-  --ink: #06070b;
-  --panel: #0c0e16;
-  --line: #222838;
-  --paper: #eef3ff;
-  --fog: #8b93a7;
-  --mint: #3ef2b2;
-  --mint-bright: #7cffd2;
-  --rose: #ff4b7a;
-  --rose-bright: #ff7a9c;
-  --gold: #ffd166;
-  --gold-bright: #ffe29a;
-  --ice: #7aa2ff;
+  --ink: #0a1410;
+  --panel: #15241c;
+  --line: #31463a;
+  --paper: #eef6f0;
+  --fog: #93a89a;
+  --mint: #8fcdb0;
+  --mint-bright: #b6e4c9;
+  --rose: #e07a6a;
+  --rose-bright: #f09a8c;
+  --gold: #e2c48a;
+  --gold-bright: #f0d8a8;
+  --ice: #8eb8d4;
 }
 
 [data-theme="ember"] {
-  --ink: #100807;
-  --panel: #1a0e0c;
-  --line: #3a221c;
-  --paper: #fff1e6;
-  --fog: #c4a394;
-  --mint: #ff8a3d;
-  --mint-bright: #ffb07a;
-  --rose: #ff4b4b;
-  --rose-bright: #ff7a7a;
-  --gold: #ffd166;
-  --gold-bright: #ffe29a;
-  --ice: #ffb86b;
+  --ink: #140e0c;
+  --panel: #221612;
+  --line: #4a3228;
+  --paper: #f6efe6;
+  --fog: #c4a894;
+  --mint: #e0a46a;
+  --mint-bright: #f0c08a;
+  --rose: #e07a6a;
+  --rose-bright: #f09a8c;
+  --gold: #e8c48a;
+  --gold-bright: #f3d8a8;
+  --ice: #d4a878;
 }
 
 [data-theme="ion"] {
-  --ink: #070712;
-  --panel: #0d1020;
-  --line: #262b4a;
-  --paper: #eef0ff;
-  --fog: #8d93c2;
-  --mint: #7c6bff;
-  --mint-bright: #a99bff;
-  --rose: #ff4bd1;
-  --rose-bright: #ff7adf;
-  --gold: #7ae1ff;
-  --gold-bright: #b5f0ff;
-  --ice: #5eead4;
+  --ink: #0a1018;
+  --panel: #141c28;
+  --line: #2a3848;
+  --paper: #e8eef6;
+  --fog: #90a0b4;
+  --mint: #7eb4d4;
+  --mint-bright: #a8d0e8;
+  --rose: #d4849c;
+  --rose-bright: #e4a4b4;
+  --gold: #c8d8e8;
+  --gold-bright: #e0ebf4;
+  --ice: #8ec0d8;
 }
 
 html,
@@ -69,12 +69,41 @@ body {
   min-height: 100%;
 }
 
+html {
+  background-color: var(--ink);
+}
+
 body {
-  background:
-    radial-gradient(1200px 500px at 50% -10%, color-mix(in oklab, var(--mint) 12%, transparent), transparent),
-    var(--ink);
+  background-color: transparent;
   color: var(--paper);
   font-family: var(--font-sans), sans-serif;
+}
+
+.site-backdrop {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.site-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  background: url("/assets/backgrounds/site/mountains.png") center / cover no-repeat;
+  filter: blur(12px) saturate(0.72) brightness(0.48);
+}
+
+.site-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--ink) 78%, transparent) 0%,
+    color-mix(in oklab, var(--ink) 42%, transparent) 42%,
+    color-mix(in oklab, var(--ink) 82%, transparent) 100%
+  );
 }
 
 .font-display {
